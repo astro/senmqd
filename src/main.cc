@@ -107,10 +107,12 @@ void gpiopolllop(vector<Gpio> & gpios, zmq::context_t & ctx)
 	vector<struct pollfd> ppack;
 	map<int,Gpio*> transfdgpio;
 	for (auto &x : gpios){
-		ppack.emplace_back();
-		ppack.back().fd = x.get_fd();
-		transfdgpio[x.get_fd()] = &x;
-		ppack.back().events = POLLPRI|POLLERR ;
+		if (x.is_in()) {
+			ppack.emplace_back();
+			ppack.back().fd = x.get_fd();
+			transfdgpio[x.get_fd()] = &x;
+			ppack.back().events = POLLPRI|POLLERR ;
+		}
 	}
 	while (1){
 		poll(&(ppack[0]),ppack.size(),8000);

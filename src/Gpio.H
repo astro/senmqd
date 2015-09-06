@@ -51,6 +51,10 @@ class Gpio {
 
 		int get_gpionum()const	{
 			return m_gpionum;};
+
+		bool is_in() const {
+			return m_direction == DIRECTION_IN;
+		}
 		
 		void register_for_valchange(const callback & cb){
 			cb_registry.push_back(cb);
